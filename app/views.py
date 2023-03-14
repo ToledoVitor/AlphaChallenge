@@ -1,10 +1,12 @@
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
-from app.models import Ativo
 from app.forms_validator import (
-    GetAtivosForm, GetAtivoByCodeForm, GetAtivoByTableForm
+    GetAtivoByCodeForm,
+    GetAtivoByTableForm,
+    GetAtivosForm,
 )
+from app.models import Ativo
 from app.serializers.ativos_serializer import AtivoSerializer
 
 
@@ -22,7 +24,7 @@ def get_ativos(request):
     if form.table:
         ativos = ativos.filter(table=form.table)
     if form.limit:
-        ativos = ativos[:form.limit]
+        ativos = ativos[: form.limit]
 
     serializer = AtivoSerializer(ativos, many=True)
     return JsonResponse(serializer.data, safe=False)
@@ -36,7 +38,7 @@ def get_ativo_history_by_code(request, code):
     if form.order_by:
         ativos = ativos.order_by(form.order_by)
     if form.limit:
-        ativos = ativos[:form.limit]
+        ativos = ativos[: form.limit]
 
     serializer = AtivoSerializer(ativos, many=True)
     return JsonResponse(serializer.data, safe=False)
@@ -50,7 +52,7 @@ def get_ativo_history_by_table(request, table):
     if form.order_by:
         ativos = ativos.order_by(form.order_by)
     if form.limit:
-        ativos = ativos[:form.limit]
+        ativos = ativos[: form.limit]
 
     serializer = AtivoSerializer(ativos, many=True)
     return JsonResponse(serializer.data, safe=False)

@@ -11,9 +11,8 @@ class AtivoSerializer(serializers.ModelSerializer):
             'name',
             'code',
             'table',
-            'last_evaluation',
-            'last_day_evaluation',
+            'last_price',
+            'last_day_price',
             'variation',
-
             'pretty_updated_at',
         )
