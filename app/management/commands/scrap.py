@@ -1,8 +1,5 @@
-from django.core.management.base import (
-    BaseCommand,
-    CommandError,
-    CommandParser,
-)
+from django.core.management.base import BaseCommand, CommandError, CommandParser
+
 from app.scrapper import ScrapperClient
 
 
@@ -14,11 +11,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
+            self.stdout.write(
+                self.style.WARNING(
+                    "Starting scrapper client. This process can take some time"
+                )
+            )
             client = ScrapperClient()
             client.scrap()
         except Exception:
             raise CommandError("Something went wrong. The scrapper has failed")
         else:
             self.stdout.write(
-                self.style.SUCCESS("Scrapper had success. Models updated")
+                self.style.SUCCESS("Scrapper run successfully. Models updated")
             )

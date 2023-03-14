@@ -5,5 +5,5 @@ from app import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("test/", views.test_view)
+    path("ativos/", views.get_ativos)
 ]
