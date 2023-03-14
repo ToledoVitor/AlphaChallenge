@@ -1,4 +1,6 @@
-app/__pycache__/
-core/__pycache__/
+django/app/__pycache__/
+django/core/__pycache__/
 venv/
+staticfiles
 *.pyc
+__pycache__
