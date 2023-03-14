@@ -5,6 +5,8 @@ from django.core.exceptions import ValidationError
 from bs4 import BeautifulSoup
 import pandas as pd
 
+from app.models import Ativo
+
 
 class ScrapperClient:
     url = "https://valorinveste.globo.com/cotacoes/"
@@ -13,9 +15,13 @@ class ScrapperClient:
         "BDRs mais negociados": "bdrs-mais-negociados",
         "Fundos Imobiliários": "fundos-imobiliarios",
     }
-    table_headers = (
-        "Nome", "Código", "Última (R$)", "Variação (%)", "Fech. dia anterior (R$)",
-    )
+    table_headers = {
+        "Nome": "name",
+        "Código": "code",
+        "Última (R$)": "last_evaluation",
+        "Variação (%)": "last_day_evaluation",
+        "Fech. dia anterior (R$)": "variation",
+    }
 
     def __init__(self, url=None) -> None:
         if url:
@@ -51,7 +57,7 @@ class ScrapperClient:
         table = table.find("tbody")
         table_data = self._get_table_data(table)
 
-        df = pd.DataFrame(columns=self.table_headers)
+        df = pd.DataFrame(columns=self.table_headers.values())
         df = self._populate_dataframe(df, table_data)
         return df
 
@@ -65,11 +71,14 @@ class ScrapperClient:
 
         return df
 
-    def _save_dataframe_in_database(self, dataframe: pd.DataFrame, table_id: str) -> None:
-        a = 1
-        pass
+    def _save_dataframe_in_database(self, df: pd.DataFrame, table_id: str) -> None:
+        df_records = df.to_dict("records")
+        ativos = [Ativo(
+            name=record["name"],
+            code=record["code"],
+            last_evaluation=record["last_evaluation"],
+            last_day_evaluation=record["last_day_evaluation"],
+            variation=record["variation"],
+        ) for record in df_records]
 
-
-if __name__ == "__main__":
-    sc = ScrapperClient()
-    sc.scrap()
+        Ativo.objects.bulk_create(ativos)
