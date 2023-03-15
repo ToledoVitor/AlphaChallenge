@@ -1,6 +1,9 @@
 import os
 from pathlib import Path
 
+import core.tasks # noqa: F401 E261
+from celery.schedules import crontab
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,7 +11,7 @@ SECRET_KEY = (
     'django-insecure-#8tm61*aga2s33n8d)q6y7_vl=b)i5(sl-!g50t#fd0m+3i6d3'
 )
 
-DEBUG = int(os.environ.get("DEBUG", default=0))
+DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
@@ -88,6 +91,22 @@ USE_I18N = True
 USE_TZ = True
 
 
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
+# STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = "redis://redis:6379"
+CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+CELERY_BEAT_SCHEDULE = {
+    "scrap": {
+        "task": "core.tasks.scrap",
+        "schedule": crontab(minute="*/10"),
+    },
+}

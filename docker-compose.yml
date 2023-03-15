@@ -1,13 +1,47 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  web:
+  django:
+    container_name: alpha-django
     build: ./django
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - ./django/:/usr/src/app/
     ports:
-      - 1337:8000
-    environment:
-      - DEBUG=1
-      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 [::1]
+      - 8000:8000
+    depends_on:
+      - redis
+    # environment:
+    #   - DATABASE_NAME=""
+    #   - DATABASE_USER=""
+    #   - DATABASE_PASS=""
+
+  redis:
+    container_name: alpha-redis
+    image: redis:alpine
+
+  celery:
+    container_name: alpha-celery
+    build: ./django
+    command: celery -A core worker -l info
+    volumes:
+      - ./django/:/usr/src/app/
+    # environment:
+    #   - DATABASE_NAME=""
+    #   - DATABASE_USER=""
+    #   - DATABASE_PASS=""
+    depends_on:
+      - redis
+
+  celery-beat:
+    container_name: alpha-beat
+    build: ./django
+    command: celery -A core beat -l info
+    volumes:
+      - ./django/:/usr/src/app/
+    # environment:
+    #   - DATABASE_NAME=""
+    #   - DATABASE_USER=""
+    #   - DATABASE_PASS=""
+    depends_on:
+      - redis
