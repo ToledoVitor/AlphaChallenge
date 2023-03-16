@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from app.models import Ativo
+from app.models import Cotacao
 
 
-class AtivoSerializer(serializers.ModelSerializer):
+class CotacaoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Ativo
+        model = Cotacao
         fields = (
             'id',
             'name',

@@ -1,11 +1,10 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
-from app import views
+from core.views import HomeView
 
 urlpatterns = [
+    path('', HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
-    path('ativos/', views.get_ativos),
-    path('ativos/code/<str:code>', views.get_ativo_history_by_code),
-    path('ativos/table/<str:table>', views.get_ativo_history_by_table),
+    path('cotacoes/', include("app.urls")),
 ]

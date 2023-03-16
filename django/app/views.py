@@ -1,58 +1,95 @@
-from django.http import JsonResponse
-from django.views.decorators.http import require_GET
-
-from app.forms_validator import (
-    GetAtivoByCodeForm,
-    GetAtivoByTableForm,
-    GetAtivosForm,
+from django.views.generic import (
+    DetailView,
+    ListView,
 )
-from app.models import Ativo
-from app.serializers.ativos_serializer import AtivoSerializer
+from django.views.generic.edit import CreateView, DeleteView
+from django.views.generic.detail import SingleObjectMixin
+from django.contrib.auth import login
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import reverse_lazy
+from django.shortcuts import redirect
+
+from .forms import CreateAvisoPrecoForm
+from .models import Cotacao
 
 
-@require_GET
-def get_ativos(request):
-    form = GetAtivosForm.parse_obj(request.GET.dict())
+class SignupView(CreateView):
+    template_name = 'core/register.html'
+    form_class = UserCreationForm
+    success_url = reverse_lazy('cotacoes.list')
 
-    ativos = Ativo.objects.all()
-    if form.order_by:
-        ativos = ativos.order_by(form.order_by)
-    if form.name:
-        ativos = ativos.filter(name__icontains=form.name)
-    if form.code:
-        ativos = ativos.filter(code__icontains=form.code)
-    if form.table:
-        ativos = ativos.filter(table=form.table)
-    if form.limit:
-        ativos = ativos[: form.limit]
+    def __init__(self, **kwargs) -> None:
+        super().__init__(**kwargs)
 
-    serializer = AtivoSerializer(ativos, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    def form_valid(self, form):
+        user = form.save()
+        if user:
+            login(self.request, user)
 
+        return super(SignupView, self).form_valid(form)
 
-@require_GET
-def get_ativo_history_by_code(request, code):
-    form = GetAtivoByCodeForm.parse_obj(request.GET.dict())
-
-    ativos = Ativo.objects.filter(code__icontains=code)
-    if form.order_by:
-        ativos = ativos.order_by(form.order_by)
-    if form.limit:
-        ativos = ativos[: form.limit]
-
-    serializer = AtivoSerializer(ativos, many=True)
-    return JsonResponse(serializer.data, safe=False)
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return redirect('cotacoes.list')
+        return super().get(request, *args, **kwargs)
 
 
-@require_GET
-def get_ativo_history_by_table(request, table):
-    form = GetAtivoByTableForm.parse_obj(request.GET.dict())
+class LogoutInterfaceView(LogoutView):
+    template_name = 'core/logout.html'
 
-    ativos = Ativo.objects.filter(table__icontains=table)
-    if form.order_by:
-        ativos = ativos.order_by(form.order_by)
-    if form.limit:
-        ativos = ativos[: form.limit]
 
-    serializer = AtivoSerializer(ativos, many=True)
-    return JsonResponse(serializer.data, safe=False)
+class LoginInterfaceView(LoginView):
+    template_name = 'core/login.html'
+    redirect_authenticated_user = True
+
+    def get_success_url(self):
+        return reverse_lazy('cotacoes.list')
+
+
+class CotacoesDeleteView(DeleteView):
+    model = Cotacao
+    success_url = '/cotacoes/'
+    template_name = 'app/cotacoes-delete.html'
+
+
+class CotacoesListView(LoginRequiredMixin, ListView):
+    model = Cotacao
+    context_object_name = "cotacoes"
+    template_name = "app/cotacoes_list.html"
+    login_url = "login"
+
+    def get_queryset(self):
+        return Cotacao.objects.all()
+
+
+class CotacoesDetailView(DetailView, SingleObjectMixin):
+    model = Cotacao
+    context_object_name = "cotacao"
+    template_name = "app/cotacoes_detail.html"
+
+    def get_queryset(self):
+        return super().get_queryset()
+
+
+class CreateAvisoPrecoView(CreateView):
+    form_class = CreateAvisoPrecoForm
+    template_name = 'app/create_aviso_preco.html'
+    success_url = '/cotacoes/'
+
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('cotacoes.list')
+        return super().get(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        cotacao = self.request.POST['cotacao_code']
+        if not Cotacao.objects.filter(code=cotacao).exists():
+            return super().form_invalid(form)
+
+        return super().form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        # cotacao_code = request.POST['cotacao_code']
+        return super().post(request, *args, **kwargs)

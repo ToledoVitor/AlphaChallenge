@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Ativo(models.Model):
+class Cotacao(models.Model):
     TABLE_CHOICHES = (
         ('Cotacões Intradia', 'cotacoes-intradia'),
         ('BDRs mais negociados', 'bdrs-mais-negociados'),
@@ -9,29 +9,52 @@ class Ativo(models.Model):
     )
 
     table = models.CharField(
-        choices=TABLE_CHOICHES, max_length=20, blank=False, null=False
+        verbose_name='Tabela Referência',
+        choices=TABLE_CHOICHES,
+        max_length=20,
+        blank=False,
+        null=False,
     )
-    name = models.CharField(max_length=30, blank=False, null=False)
-    code = models.CharField(max_length=5, blank=False, null=False)
+    name = models.CharField(
+        verbose_name='Nome do Ativo', max_length=30, blank=False, null=False
+    )
+    code = models.CharField(
+        verbose_name='Código do Ativo', max_length=5, blank=False, null=False
+    )
 
     last_price = models.DecimalField(
-        max_digits=6, decimal_places=2, blank=True, null=True
+        verbose_name='Último Preço do Ativo',
+        max_digits=6,
+        decimal_places=2,
+        blank=True,
+        null=True,
     )
     last_day_price = models.DecimalField(
-        max_digits=6, decimal_places=2, blank=True, null=True
+        verbose_name='Preço do Último Ativo',
+        max_digits=6,
+        decimal_places=2,
+        blank=True,
+        null=True,
     )
     variation = models.DecimalField(
-        max_digits=6, decimal_places=2, blank=True, null=True
+        verbose_name='Variação',
+        max_digits=6,
+        decimal_places=2,
+        blank=True,
+        null=True,
     )
 
     updated_at = models.DateTimeField(
-        auto_now_add=True, blank=False, null=False
+        verbose_name='Atualizado em',
+        auto_now_add=True,
+        blank=False,
+        null=False,
     )
 
     class Meta:
         ordering = ['updated_at']
-        verbose_name = 'Ativo'
-        verbose_name_plural = 'Ativos'
+        verbose_name = 'Cotação'
+        verbose_name_plural = 'Cotações'
 
     def pretty_updated_at(self):
         return self.updated_at.strftime('%H:%M %d/%m/%Y')
@@ -41,5 +64,9 @@ class Ativo(models.Model):
 
 
 class AvisoPreco(models.Model):
-    ativo_code = models.CharField(max_length=5, blank=False, null=False)
-    value = models.DecimalField(max_digits=5, decimal_places=2)
+    cotacao_code = models.CharField(
+        verbose_name='Código do Ativo', max_length=5, blank=False, null=False
+    )
+    value = models.DecimalField(
+        verbose_name='Preço Alvo', max_digits=5, decimal_places=2
+    )

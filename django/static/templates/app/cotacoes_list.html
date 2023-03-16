@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="my-5">Esses são todos os preços:</h1>
+
+    <div class="row row-cols3 g-2">
+
+        {% for cotacao in cotacoes %}
+            <div class="border">
+                <tr>{{cotacao.name}}</tr>
+                <tr>{{cotacao}}, {{cotacao.last_price }}</tr>
+            </div>
+        {% empty %}
+            <h3>Parece que não existe dados salvos ainda</h3>
+
+            <p>
+                Caso você ainda precise popular o seu banco, siga o arquivo
+                readme.md ou rode <b>python django/manage.py scrap</b> na raíz do projeto
+            </p>
+        {% endfor %}
+    </div>
+{% endblock %}

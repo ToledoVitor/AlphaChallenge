@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from django.core.exceptions import ValidationError
 from requests.models import Response
 
-from app.models import Ativo
+from app.models import Cotacao
 
 
 class ScrapperClient:
@@ -76,13 +76,13 @@ class ScrapperClient:
         self, df: pd.DataFrame, table_id: str
     ) -> None:
         df_records = df.to_dict('records')
-        ativos = [
-            self._ativo_from_record(record=record, table_id=table_id)
+        cotacoes = [
+            self._cotacoes_from_record(record=record, table_id=table_id)
             for record in df_records
         ]
-        Ativo.objects.bulk_create(ativos)
+        Cotacao.objects.bulk_create(cotacoes)
 
-    def _ativo_from_record(self, record: dict, table_id: str):
+    def _cotacoes_from_record(self, record: dict, table_id: str):
         try:
             last_price = float(record['last_price'].replace(',', '.'))
             last_day_price = float(
@@ -94,7 +94,7 @@ class ScrapperClient:
             last_day_price = None
             variation = None
 
-        return Ativo(
+        return Cotacao(
             table=table_id,
             name=record['name'],
             code=record['code'],

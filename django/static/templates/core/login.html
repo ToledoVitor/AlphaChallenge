@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="center pa-2 d-flex justify-content-center">
+        <form style="width: 400px;" method="post" novaldiate class="card">{% csrf_token %}
+
+            <h3 class="text-center">Fazer Login</h2>
+            {% for field in form %}
+                {{ field.label_tag }} 
+                {{ field }}
+                {% if field.errors %}
+                    <small class="error text-danger">{{ field.errors|striptags  }}</small> 
+                {% endif %}
+            {% endfor %}
+
+            <input type="submit" value="Enviar" class="my-4 btn btn-primary full-width">
+
+        </form>
+    </div>
+
+    {% comment %} <form method="post">{% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" class="btn btn-secondary" />
+    </form> {% endcomment %}
+{% endblock %}

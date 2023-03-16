@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Até breve! :)</h1>
+
+    <div class="ms-auto">
+        <a href="{% url 'signup' %}" class="btn btn-outline-light me-1">Criar Conta</a>
+        <a href="{% url 'login' %}" class="btn btn-outline-light me-1">Login</a>
+    </div>
+{% endblock %}

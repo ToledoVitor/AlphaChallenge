@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import core.tasks # noqa: F401 E261
@@ -42,7 +41,9 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / 'static/templates'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -91,9 +92,10 @@ USE_I18N = True
 USE_TZ = True
 
 
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media/'

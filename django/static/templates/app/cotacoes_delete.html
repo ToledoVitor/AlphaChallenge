@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <form method="post">{% csrf_token %}
+        <p>Você tem certeza que quer deletar "{{cotacao.code}}"</p>
+        <p>Essa ação não pode ser desfeita</p>
+
+        <input type="submit" class="btn btn-danger" value="confirm" />
+    </form>
+{% endblock %}
