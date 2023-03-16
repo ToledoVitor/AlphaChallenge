@@ -1,6 +1,42 @@
 version: '3.9'
 
 services:
+  database:
+    container_name: alpha-postgres
+    image: postgres
+    restart: always
+    user: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_NAME: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    healthcheck:
+      test: ["CMD", "pg_isready", "-q"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    # Probabily you are going to use it, but i like to have and pgadmin when using postgres
+    container_name: alpha-pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - "5051:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
+      PGADMIN_DEFAULT_PASSWORD: root
+    depends_on:
+      database:
+        condition: service_healthy
+
   django:
     container_name: alpha-django
     build: ./django
@@ -10,15 +46,25 @@ services:
     ports:
       - 8000:8000
     depends_on:
-      - redis
-    # environment:
-    #   - DATABASE_NAME=""
-    #   - DATABASE_USER=""
-    #   - DATABASE_PASS=""
+      redis:
+        condition: service_healthy
+      database:
+        condition: service_healthy
+    environment:
+      DATABASE_HOST: "database"
+      DATABASE_PORT: 5432
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
 
   redis:
     container_name: alpha-redis
     image: redis:alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
   celery:
     container_name: alpha-celery
@@ -26,12 +72,15 @@ services:
     command: celery -A core worker -l info
     volumes:
       - ./django/:/usr/src/app/
-    # environment:
-    #   - DATABASE_NAME=""
-    #   - DATABASE_USER=""
-    #   - DATABASE_PASS=""
+    environment:
+      DATABASE_HOST: "database"
+      DATABASE_PORT: 5432
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
 
   celery-beat:
     container_name: alpha-beat
@@ -39,9 +88,15 @@ services:
     command: celery -A core beat -l info
     volumes:
       - ./django/:/usr/src/app/
-    # environment:
-    #   - DATABASE_NAME=""
-    #   - DATABASE_USER=""
-    #   - DATABASE_PASS=""
+    environment:
+      DATABASE_HOST: "database"
+      DATABASE_PORT: 5432
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

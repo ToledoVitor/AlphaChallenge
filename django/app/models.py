@@ -16,29 +16,29 @@ class Cotacao(models.Model):
         null=False,
     )
     name = models.CharField(
-        verbose_name='Nome do Ativo', max_length=30, blank=False, null=False
+        verbose_name='Nome do Ativo', max_length=100, blank=False, null=False
     )
     code = models.CharField(
-        verbose_name='Código do Ativo', max_length=5, blank=False, null=False
+        verbose_name='Código do Ativo', max_length=10, blank=False, null=False
     )
 
     last_price = models.DecimalField(
         verbose_name='Último Preço do Ativo',
-        max_digits=6,
+        max_digits=10,
         decimal_places=2,
         blank=True,
         null=True,
     )
     last_day_price = models.DecimalField(
         verbose_name='Preço do Último Ativo',
-        max_digits=6,
+        max_digits=10,
         decimal_places=2,
         blank=True,
         null=True,
     )
     variation = models.DecimalField(
         verbose_name='Variação',
-        max_digits=6,
+        max_digits=10,
         decimal_places=2,
         blank=True,
         null=True,
@@ -65,8 +65,8 @@ class Cotacao(models.Model):
 
 class AvisoPreco(models.Model):
     cotacao_code = models.CharField(
-        verbose_name='Código do Ativo', max_length=5, blank=False, null=False
+        verbose_name='Código do Ativo', max_length=10, blank=False, null=False
     )
     value = models.DecimalField(
-        verbose_name='Preço Alvo', max_digits=5, decimal_places=2
+        verbose_name='Preço Alvo', max_digits=10, decimal_places=2
     )
