@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-# This im important to celery knows where look for tasks
+# This is important to celery knows where look for tasks
 import core.tasks   # noqa: F401 E261
 from celery.schedules import crontab
 

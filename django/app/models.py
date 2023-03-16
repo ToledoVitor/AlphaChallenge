@@ -67,9 +67,10 @@ class AvisoPreco(models.Model):
     cotacao_code = models.CharField(
         verbose_name='Código do Ativo', max_length=10, blank=False, null=False
     )
-    value = models.DecimalField(
-        verbose_name='Preço Alvo', max_digits=10, decimal_places=2
+    buy_value = models.DecimalField(
+        verbose_name='Preço de Compra', max_digits=10, decimal_places=2
     )
-
-    # If true, the user was already warned about the price
-    completed = models.BooleanField(default=False)
+    sell_value = models.DecimalField(
+        verbose_name='Preço de Venda', max_digits=10, decimal_places=2
+    )
+    user_warned = models.BooleanField(default=False)
