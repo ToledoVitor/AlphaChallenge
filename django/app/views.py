@@ -70,7 +70,7 @@ class AvisoPrecoListView(LoginRequiredMixin, ListView):
 class AvisoPrecoCreateView(CreateView):
     form_class = CreateAvisoPrecoForm
     template_name = 'app/avisos_create.html'
-    success_url = '/cotacoes/'
+    success_url = '/cotacoes/avisos'
 
     def get(self, request, *args, **kwargs):
         if not self.request.user.is_authenticated:

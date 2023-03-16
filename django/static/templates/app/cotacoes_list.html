@@ -5,7 +5,7 @@
 
     <div class="row row-cols3 g-2">
 
-        <div class="container">
+        <div class="container bg-secondary text-white">
             <div class="row">
                 <div class="col-sm font-weight-bold">
                     Nome do Ativo
@@ -58,8 +58,7 @@
                 </div>
             </div>
         {% empty %}
-            <h3>Parece que não existem dados salvos ainda</h3>
-
+            <h3 class="mt-4">Parece que não existem dados salvos ainda</h3>
             <p>
                 Caso você ainda precise popular o seu banco, siga o arquivo
                 readme.md ou rode <b>python django/manage.py scrap</b> na raíz do projeto

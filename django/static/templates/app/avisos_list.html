@@ -5,7 +5,7 @@
 
     <div class="row row-cols3 g-2">
 
-        <div class="container">
+        <div class="container bg-secondary text-white">
             <div class="row">
                 <div class="col-sm font-weight-bold">
                     Código do Ativo
@@ -28,8 +28,11 @@
                 </div>
             </div>
         {% empty %}
-            <h3>Parece que não existem avisos criados ainda</h3>
+            <h3 class="mt-4">Parece que não existem avisos criados ainda</h3>
             <p>Tente criar um aviso primeiro e acesse a página novamente</p>
         {% endfor %}
+
+        <hr class="mt-4">
+        <p class="text-center">Não acho o seu aviso? <a href="{% url 'avisos.new'%}">Crie um agora</a></p>
     </div>
 {% endblock %}
