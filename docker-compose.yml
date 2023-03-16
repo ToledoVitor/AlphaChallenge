@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  database:
+  db:
     container_name: alpha-postgres
     image: postgres
     restart: always
@@ -16,7 +16,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data/
+      - pg_data:/var/lib/postgresql/data/
     healthcheck:
       test: ["CMD", "pg_isready", "-q"]
       interval: 5s
@@ -34,7 +34,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.org
       PGADMIN_DEFAULT_PASSWORD: root
     depends_on:
-      database:
+      db:
         condition: service_healthy
 
   django:
@@ -48,10 +48,10 @@ services:
     depends_on:
       redis:
         condition: service_healthy
-      database:
+      db:
         condition: service_healthy
     environment:
-      DATABASE_HOST: "database"
+      DATABASE_HOST: "db"
       DATABASE_PORT: 5432
       DATABASE_NAME: postgres
       DATABASE_USER: postgres
@@ -73,7 +73,7 @@ services:
     volumes:
       - ./django/:/usr/src/app/
     environment:
-      DATABASE_HOST: "database"
+      DATABASE_HOST: "db"
       DATABASE_PORT: 5432
       DATABASE_NAME: postgres
       DATABASE_USER: postgres
@@ -89,7 +89,7 @@ services:
     volumes:
       - ./django/:/usr/src/app/
     environment:
-      DATABASE_HOST: "database"
+      DATABASE_HOST: "db"
       DATABASE_PORT: 5432
       DATABASE_NAME: postgres
       DATABASE_USER: postgres
@@ -99,4 +99,4 @@ services:
         condition: service_healthy
 
 volumes:
-  postgres_data:
+  pg_data:
