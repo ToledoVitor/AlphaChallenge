@@ -112,6 +112,10 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_BEAT_SCHEDULE = {
     'scrap': {
         'task': 'core.tasks.scrap',
-        'schedule': crontab(minute='*/10'),
+        'schedule': crontab(minute='*/5'),
+    },
+    'check_price_alerts': {
+        'task': 'core.tasks.check_price_alerts',
+        'schedule': crontab(minute='*/5'),
     },
 }

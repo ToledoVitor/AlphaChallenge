@@ -64,7 +64,11 @@ class AvisoPrecoListView(LoginRequiredMixin, ListView):
     login_url = 'login'
 
     def get_queryset(self):
-        return super().get_queryset()
+        return (
+            AvisoPreco
+            .objects
+            .filter(completed=False)
+        )
 
 
 class AvisoPrecoCreateView(CreateView):

@@ -45,7 +45,8 @@ class Command(BaseCommand):
                         message=message,
                         html_message=None,
                     )
+                    self.stdout.write(self.style.SUCCESS('Email alert sent.'))
         except Exception as e:
             raise CommandError(e)
         else:
-            self.stdout.write(self.style.SUCCESS('Email alerts sent.'))
+            self.stdout.write(self.style.SUCCESS('Email alerts checked.'))
