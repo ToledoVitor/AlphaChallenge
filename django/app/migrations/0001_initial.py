@@ -7,29 +7,109 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
             name='AvisoPreco',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cotacao_code', models.CharField(max_length=5, verbose_name='Código do Ativo')),
-                ('value', models.DecimalField(decimal_places=2, max_digits=5, verbose_name='Preço Alvo')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'cotacao_code',
+                    models.CharField(
+                        max_length=5, verbose_name='Código do Ativo'
+                    ),
+                ),
+                (
+                    'value',
+                    models.DecimalField(
+                        decimal_places=2,
+                        max_digits=5,
+                        verbose_name='Preço Alvo',
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='Cotacao',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('table', models.CharField(choices=[('Cotacões Intradia', 'cotacoes-intradia'), ('BDRs mais negociados', 'bdrs-mais-negociados'), ('Fundos Imobiliários', 'fundos-imobiliarios')], max_length=20, verbose_name='Tabela Referência')),
-                ('name', models.CharField(max_length=30, verbose_name='Nome do Ativo')),
-                ('code', models.CharField(max_length=5, verbose_name='Código do Ativo')),
-                ('last_price', models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True, verbose_name='Último Preço do Ativo')),
-                ('last_day_price', models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True, verbose_name='Preço do Último Ativo')),
-                ('variation', models.DecimalField(blank=True, decimal_places=2, max_digits=6, null=True, verbose_name='Variação')),
-                ('updated_at', models.DateTimeField(auto_now_add=True, verbose_name='Atualizado em')),
+                (
+                    'id',
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'table',
+                    models.CharField(
+                        choices=[
+                            ('Cotacões Intradia', 'cotacoes-intradia'),
+                            ('BDRs mais negociados', 'bdrs-mais-negociados'),
+                            ('Fundos Imobiliários', 'fundos-imobiliarios'),
+                        ],
+                        max_length=20,
+                        verbose_name='Tabela Referência',
+                    ),
+                ),
+                (
+                    'name',
+                    models.CharField(
+                        max_length=30, verbose_name='Nome do Ativo'
+                    ),
+                ),
+                (
+                    'code',
+                    models.CharField(
+                        max_length=5, verbose_name='Código do Ativo'
+                    ),
+                ),
+                (
+                    'last_price',
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        max_digits=6,
+                        null=True,
+                        verbose_name='Último Preço do Ativo',
+                    ),
+                ),
+                (
+                    'last_day_price',
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        max_digits=6,
+                        null=True,
+                        verbose_name='Preço do Último Ativo',
+                    ),
+                ),
+                (
+                    'variation',
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        max_digits=6,
+                        null=True,
+                        verbose_name='Variação',
+                    ),
+                ),
+                (
+                    'updated_at',
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name='Atualizado em'
+                    ),
+                ),
             ],
             options={
                 'verbose_name': 'Cotação',

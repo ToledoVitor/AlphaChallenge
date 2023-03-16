@@ -56,9 +56,9 @@ class CotacoesDeleteView(DeleteView):
 
 class CotacoesListView(LoginRequiredMixin, ListView):
     model = Cotacao
-    context_object_name = "cotacoes"
-    template_name = "app/cotacoes_list.html"
-    login_url = "login"
+    context_object_name = 'cotacoes'
+    template_name = 'app/cotacoes_list.html'
+    login_url = 'login'
 
     def get_queryset(self):
         return Cotacao.objects.all()
@@ -66,8 +66,8 @@ class CotacoesListView(LoginRequiredMixin, ListView):
 
 class CotacoesDetailView(DetailView, SingleObjectMixin):
     model = Cotacao
-    context_object_name = "cotacao"
-    template_name = "app/cotacoes_detail.html"
+    context_object_name = 'cotacao'
+    template_name = 'app/cotacoes_detail.html'
 
     def get_queryset(self):
         return super().get_queryset()

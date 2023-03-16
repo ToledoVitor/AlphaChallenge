@@ -4,4 +4,6 @@ from django.core.management import call_command
 
 @shared_task
 def scrap():
-    call_command("scrap",)
+    call_command(
+        'scrap',
+    )
