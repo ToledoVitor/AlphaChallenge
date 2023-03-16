@@ -10,11 +10,14 @@ The project also gives the possibility to create price alerts, which will check
 for the option price change, and will send a message when gets to the defined value. 
 
 For developpers, I used python with django for developping the whole backend, 
-redis and celery with celery beat for periodic tasks and scheduling jobs, and
-for database postgres.
+[redis](https://redis.io/) and [celery](https://docs.celeryq.dev/en/stable/)
+with [celery beat](https://docs.celeryq.dev/en/stable/reference/celery.beat.html)
+for periodic tasks and scheduling jobs, and for database
+[postgres](https://www.postgresql.org/).
 
 Despite the challenge don't define a frontend technology, I decided to create some
-user interface. For that, I used Django Templates.
+user interface. For that, I used
+[Django Templates](https://docs.djangoproject.com/en/4.1/ref/templates/language/).
 
 
 ## How It Works
@@ -76,7 +79,7 @@ services and configuration for them.
 
 To build your containers you can run:
 ```sh
-    docker compose build`
+    docker compose build
 ```
 
 Once the build is complete, to start the project just run:
@@ -160,5 +163,5 @@ Everything here was made in a short period of time and may have some
 inconsistency and unnecessary features. I know many things can be optimized but
 it would take a lot of time.
 
-If you want to contact me, you can reach my
+If you want to contact me, you can reach me by my
 [linkedin profile](https://www.linkedin.com/in/vitorstoledo/).
