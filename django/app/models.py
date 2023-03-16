@@ -70,3 +70,6 @@ class AvisoPreco(models.Model):
     value = models.DecimalField(
         verbose_name='Preço Alvo', max_digits=10, decimal_places=2
     )
+
+    # If true, the user was already warned about the price
+    completed = models.BooleanField(default=False)

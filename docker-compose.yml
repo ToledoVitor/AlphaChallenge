@@ -79,6 +79,8 @@ services:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
     depends_on:
+      db:
+        condition: service_healthy
       redis:
         condition: service_healthy
 
@@ -95,6 +97,8 @@ services:
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
     depends_on:
+      db:
+        condition: service_healthy
       redis:
         condition: service_healthy
 
