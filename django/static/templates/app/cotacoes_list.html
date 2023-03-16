@@ -5,10 +5,57 @@
 
     <div class="row row-cols3 g-2">
 
+        <div class="container">
+            <div class="row">
+                <div class="col-sm font-weight-bold">
+                    Nome do Ativo
+                </div>
+                <div class="col-sm font-weight-bold">
+                    Código do Ativo
+                </div>
+                <div class="col-sm font-weight-bold">
+                    Tabela
+                </div>
+                <div class="col-sm font-weight-bold">
+                    Atualizado há
+                </div>
+                <div class="col-sm font-weight-bold">
+                    Preço Atual (R$)
+                </div>
+                <div class="col-sm font-weight-bold">
+                    Diferença Ontem (R$)
+                </div>
+                <div class="col-sm font-weight-bold">
+                    Variação (%)
+                </div>
+            </div>
+        </div>
+
         {% for cotacao in cotacoes %}
-            <div class="border">
-                <tr>{{cotacao.name}}</tr>
-                <tr>{{cotacao}}, {{cotacao.last_price }}</tr>
+            <div class="border container">
+                <div class="row">
+                    <div class="col-sm">
+                        {{cotacao.name}}
+                    </div>
+                    <div class="col-sm">
+                        {{cotacao.code}}
+                    </div>
+                    <div class="col-sm">
+                        {{cotacao.table}}
+                    </div>
+                    <div class="col-sm">
+                        {{cotacao.updated_at|timesince}}
+                    </div>
+                    <div class="col-sm">
+                        {{cotacao.last_price|default_if_none:"Não Informado"}}
+                    </div>
+                    <div class="col-sm">
+                        {{cotacao.last_day_price|default_if_none:"Não Informado"}}
+                    </div>
+                    <div class="col-sm">
+                        {{cotacao.variation|default_if_none:"Não Informado"}}
+                    </div>
+                </div>
             </div>
         {% empty %}
             <h3>Parece que não existem dados salvos ainda</h3>

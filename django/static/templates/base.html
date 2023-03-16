@@ -7,13 +7,14 @@
         <link rel="stylesheet" type='text/css' href="{% static 'css/style.css' %}">
     </head>
 
-    <body>
+    <body style="margin-bottom: 80px !important;">
         <nav class="navbar navbar-dark bg-dark">
             <div class="ms-auto">
                 {% if user.is_authenticated %}
                     <a href="{% url 'home' %}" class="btn btn-outline-light me-1">Home</a>
                     <a href="{% url 'cotacoes.list' %}" class="btn btn-outline-light me-1">Preços</a>
-                    <a href="{% url 'aviso.new' %}" class="btn btn-outline-light me-1">Criar Alerta</a>
+                    <a href="{% url 'avisos.list' %}" class="btn btn-outline-light me-1">Alertas</a>
+                    <a href="{% url 'avisos.new' %}" class="btn btn-outline-light me-1">Criar Alerta</a>
                     <a href="{% url 'logout' %}" class="btn btn-outline-light me-1">Sair</a>
                 {% else %}
                     <a href="{% url 'signup' %}" class="btn btn-outline-light me-1">Criar Conta</a>
@@ -33,12 +34,12 @@
         style="background-color: rgba(0, 0, 0, 0.05);"
     >
         <div
-            class="text-center p-3"
-            style="background-color: rgba(0, 0, 0, 0.2);"
+            class="text-center text-white p-3"
+            style="background-color: rgba(0, 0, 0, 1);"
         >
           © 2023 Copyright:
             <a
-                class="text-black"
+                class="text-white"
                 href="https://www.linkedin.com/in/vitorstoledo/"
             >
                 Vitor Toledo

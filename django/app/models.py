@@ -30,7 +30,7 @@ class Cotacao(models.Model):
         null=True,
     )
     last_day_price = models.DecimalField(
-        verbose_name='Preço do Último Ativo',
+        verbose_name='Preço do Último Dia',
         max_digits=10,
         decimal_places=2,
         blank=True,

@@ -1,9 +1,5 @@
-from django.views.generic import (
-    DetailView,
-    ListView,
-)
-from django.views.generic.edit import CreateView, DeleteView
-from django.views.generic.detail import SingleObjectMixin
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
@@ -12,16 +8,13 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
 from .forms import CreateAvisoPrecoForm
-from .models import Cotacao
+from .models import AvisoPreco, Cotacao
 
 
 class SignupView(CreateView):
     template_name = 'core/register.html'
     form_class = UserCreationForm
     success_url = reverse_lazy('cotacoes.list')
-
-    def __init__(self, **kwargs) -> None:
-        super().__init__(**kwargs)
 
     def form_valid(self, form):
         user = form.save()
@@ -48,12 +41,6 @@ class LoginInterfaceView(LoginView):
         return reverse_lazy('cotacoes.list')
 
 
-class CotacoesDeleteView(DeleteView):
-    model = Cotacao
-    success_url = '/cotacoes/'
-    template_name = 'app/cotacoes-delete.html'
-
-
 class CotacoesListView(LoginRequiredMixin, ListView):
     model = Cotacao
     context_object_name = 'cotacoes'
@@ -61,21 +48,28 @@ class CotacoesListView(LoginRequiredMixin, ListView):
     login_url = 'login'
 
     def get_queryset(self):
-        return Cotacao.objects.all()
+        return (
+            Cotacao
+            .objects
+            .order_by("code", "-updated_at")
+            .distinct("code")
+            .all()
+        )
 
 
-class CotacoesDetailView(DetailView, SingleObjectMixin):
-    model = Cotacao
-    context_object_name = 'cotacao'
-    template_name = 'app/cotacoes_detail.html'
+class AvisoPrecoListView(LoginRequiredMixin, ListView):
+    model = AvisoPreco
+    context_object_name = 'avisos'
+    template_name = 'app/avisos_list.html'
+    login_url = 'login'
 
     def get_queryset(self):
         return super().get_queryset()
 
 
-class CreateAvisoPrecoView(CreateView):
+class AvisoPrecoCreateView(CreateView):
     form_class = CreateAvisoPrecoForm
-    template_name = 'app/create_aviso_preco.html'
+    template_name = 'app/avisos_create.html'
     success_url = '/cotacoes/'
 
     def get(self, request, *args, **kwargs):
@@ -89,7 +83,3 @@ class CreateAvisoPrecoView(CreateView):
             return super().form_invalid(form)
 
         return super().form_valid(form)
-
-    def post(self, request, *args, **kwargs):
-        # cotacao_code = request.POST['cotacao_code']
-        return super().post(request, *args, **kwargs)

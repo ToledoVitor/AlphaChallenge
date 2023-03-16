@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=100, verbose_name='Nome do Ativo')),
                 ('code', models.CharField(max_length=10, verbose_name='Código do Ativo')),
                 ('last_price', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True, verbose_name='Último Preço do Ativo')),
-                ('last_day_price', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True, verbose_name='Preço do Último Ativo')),
+                ('last_day_price', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True, verbose_name='Preço do Último Dia')),
                 ('variation', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True, verbose_name='Variação')),
                 ('updated_at', models.DateTimeField(auto_now_add=True, verbose_name='Atualizado em')),
             ],

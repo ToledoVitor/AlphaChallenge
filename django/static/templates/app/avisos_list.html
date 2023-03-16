@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="my-5">Esses são todos os avisos de preço:</h1>
+
+    <div class="row row-cols3 g-2">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm font-weight-bold">
+                    Código do Ativo
+                </div>
+                <div class="col-sm font-weight-bold">
+                    Preço Alvo
+                </div>
+            </div>
+        </div>
+
+        {% for aviso in avisos %}
+            <div class="border container">
+                <div class="row">
+                    <div class="col-sm">
+                        {{aviso.cotacao_code}}
+                    </div>
+                    <div class="col-sm">
+                        {{aviso.value}}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h3>Parece que não existem avisos criados ainda</h3>
+            <p>Tente criar um aviso primeiro e acesse a página novamente</p>
+        {% endfor %}
+    </div>
+{% endblock %}
