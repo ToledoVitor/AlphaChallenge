@@ -18,11 +18,7 @@ class Command(BaseCommand):
             return
 
         try:
-            self.stdout.write(
-                self.style.WARNING(
-                    'Creating superuser'
-                )
-            )
+            self.stdout.write(self.style.WARNING('Creating superuser'))
             User.objects.create_superuser(
                 username='admin', email='admin@mail.com', password='admin'
             )

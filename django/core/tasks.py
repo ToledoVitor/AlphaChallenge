@@ -11,4 +11,6 @@ def scrap():
 
 @shared_task
 def check_price_alerts():
-    call_command('check_price_alerts',)
+    call_command(
+        'check_price_alerts',
+    )

@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import AvisoPreco, Cotacao
+
+
+admin.site.register(AvisoPreco)
+admin.site.register(Cotacao)

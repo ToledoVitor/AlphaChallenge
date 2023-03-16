@@ -49,10 +49,8 @@ class CotacoesListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return (
-            Cotacao
-            .objects
-            .order_by("code", "-updated_at")
-            .distinct("code")
+            Cotacao.objects.order_by('code', '-updated_at')
+            .distinct('code')
             .all()
         )
 
@@ -64,11 +62,7 @@ class AvisoPrecoListView(LoginRequiredMixin, ListView):
     login_url = 'login'
 
     def get_queryset(self):
-        return (
-            AvisoPreco
-            .objects
-            .filter(completed=False)
-        )
+        return AvisoPreco.objects.filter(completed=False)
 
 
 class AvisoPrecoCreateView(CreateView):
